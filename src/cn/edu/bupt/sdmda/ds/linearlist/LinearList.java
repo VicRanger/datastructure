@@ -12,4 +12,6 @@ public interface LinearList<T> {
 	void set(int i, T t);
 	int  find(T t);	
 	LinearList<T> sort();
+	void reverse(int i, int j);
+	void reverse();
 }

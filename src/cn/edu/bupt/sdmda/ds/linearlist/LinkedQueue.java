@@ -1,26 +1,41 @@
 package cn.edu.bupt.sdmda.ds.linearlist;
 
-public class LinkedQueue<T> extends MyLinkedList<T> implements MyQueue<T> {
+public class LinkedQueue<T> extends MyLinkedList<T> implements MyQueue<T>{
+	
+	Node tail;
+	
 	public LinkedQueue() {
-		// TODO Auto-generated constructor stub
 		super();
 	}
-
+	
 	@Override
 	public void offer(T t) {
-		// TODO Auto-generated method stub
+		if(isEmpty()) {
+			super.insert(0, t);
+			tail = super._head._next;
+		}else {
+			tail = insertAt(tail, new Node(t,null));
+		}
 	}
 
 	@Override
 	public T poll() {
-		// TODO Auto-generated method stub
-		return null;
+		if(isEmpty()) {
+			return null;
+		}
+		return super.deleteAt(0);
 	}
 
 	@Override
 	public T getHead() {
-		// TODO Auto-generated method stub
-		return null;
+		return super.get(getSize()-1);
+	}
+	
+	private Node insertAt(Node cur,Node node) {
+		node._next = cur._next;
+		cur._next = node;
+		super._size ++;
+		return node;
 	}
 
 }

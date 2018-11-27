@@ -49,24 +49,24 @@ public class Symbol implements Comparable<Symbol>{
 		return result;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Symbol other = (Symbol) obj;
-		if (Double.doubleToLongBits(prob) != Double.doubleToLongBits(other.prob))
-			return false;
-		if (symbol == null) {
-			if (other.symbol != null)
-				return false;
-		} else if (!symbol.equals(other.symbol))
-			return false;
-		return true;
-	}
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (this == obj)
+//			return true;
+//		if (obj == null)
+//			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
+//		Symbol other = (Symbol) obj;
+//		if (Double.doubleToLongBits(prob) != Double.doubleToLongBits(other.prob))
+//			return false;
+//		if (symbol == null) {
+//			if (other.symbol != null)
+//				return false;
+//		} else if (!symbol.equals(other.symbol))
+//			return false;
+//		return true;
+//	}
 
 
 }

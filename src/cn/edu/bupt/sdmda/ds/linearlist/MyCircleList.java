@@ -1,10 +1,8 @@
 package cn.edu.bupt.sdmda.ds.linearlist;
 
-import java.util.Arrays;
 
-public class MyLinkedList<T> implements LinearList<T> {
-
-    class Node {
+public class MyCircleList<T> implements LinearList<T> {
+	class Node {
         public T _ele;
         public Node _next;
 
@@ -29,11 +27,11 @@ public class MyLinkedList<T> implements LinearList<T> {
     Node _head;
     int _size;
 
-    public MyLinkedList(int s, T init) {
+    public MyCircleList(int s, T init) {
     	init(s,init);
     }
 
-    public MyLinkedList() {
+    public MyCircleList() {
     	init(0,null);
     }
 
@@ -46,26 +44,7 @@ public class MyLinkedList<T> implements LinearList<T> {
 			cur._next = new Node(init,null);
 			cur = cur._next;
 		}
-    }
-    @Override
-    public void reverse(int start,int end) {
-    	Node prevNode = findAt(start-1);
-    	Node curNode = findAt(start);
-    	Node endNode = findAt(end); 
-    	Node endNextNode = endNode._next;
-    	Node nextNode = curNode;
-    	Node lastNode = endNode._next;
-    	while(nextNode!=endNextNode) {
-    		curNode = nextNode;
-    		nextNode = curNode._next;
-    		curNode._next = lastNode;
-    		lastNode = curNode;
-    	}
-    	prevNode._next = endNode;
-    }
-    @Override
-    public void reverse() {
-    	reverse(0,_size-1);
+		cur._next = _head._next;
     }
     
     @Override
@@ -103,6 +82,14 @@ public class MyLinkedList<T> implements LinearList<T> {
         node._next = cur._next;
         cur._next = node;
         _size++;
+        lastToFirst();
+    }
+    
+    public void lastToFirst() {
+    	if(isEmpty()) {
+    		return;
+    	}
+    	findAt(getSize()-1)._next = findAt(0);
     }
 
     @Override
@@ -112,6 +99,7 @@ public class MyLinkedList<T> implements LinearList<T> {
             if (t.equals(cur._next._ele)) {
                 cur._next = cur._next._next;
                 _size--;
+                lastToFirst();
                 return;
             }
             cur = cur._next;
@@ -127,10 +115,13 @@ public class MyLinkedList<T> implements LinearList<T> {
     	Node ret = node._next;
     	node._next = node._next._next;
     	_size --;
+    	lastToFirst();
     	return ret._ele;
     }
 
     private Node findAt(int i) {
+//    	System.out.println();
+//    	System.out.println("findAt "+i);
     	if(i<-1 || i>=_size) {
     		return null;
     	}
@@ -177,24 +168,9 @@ public class MyLinkedList<T> implements LinearList<T> {
 
     @Override
     public LinearList<T> sort() {
-    	Object a[] = new Object[_size];
-    	Node cur = _head._next;
-    	for(int i=0;i<_size;i++) {
-    		a[i] = cur._ele;
-    		cur = cur._next;
-    	}
-    	Arrays.sort(a);
-    	MyLinkedList<T> ret = new MyLinkedList<T>(_size,null);
-    	for(int i=0;i<_size;i++) {
-    		ret.set(i, (T) a[i]);
-    	}
-        return (LinearList<T>) ret;
-    }
-
-    private Node getNodeBefore(int i) {
-        // assume i is a valid value
         return null;
     }
+
 
     private boolean checkReadableRange(int i) {
         if (i < 0 || i >= _size) {
@@ -208,5 +184,28 @@ public class MyLinkedList<T> implements LinearList<T> {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void reverse(int start,int end) {
+    	findAt(getSize()-1)._next = null;
+    	Node prevNode = findAt(start-1);
+    	Node curNode = findAt(start);
+    	Node endNode = findAt(end); 
+    	Node endNextNode = endNode._next;
+    	Node nextNode = curNode;
+    	Node lastNode = endNode._next;
+    	while(nextNode!=endNextNode) {
+    		curNode = nextNode;
+    		nextNode = curNode._next;
+    		curNode._next = lastNode;
+    		lastNode = curNode;
+    	}
+    	prevNode._next = endNode;
+        lastToFirst();
+    }
+    @Override
+    public void reverse() {
+    	reverse(0,_size-1);
     }
 }

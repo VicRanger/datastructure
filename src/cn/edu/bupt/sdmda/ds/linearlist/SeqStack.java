@@ -1,5 +1,7 @@
 package cn.edu.bupt.sdmda.ds.linearlist;
 
+
+
 public class SeqStack<T> extends SeqList<T> implements MyStack<T>{
 
 	public SeqStack(){
@@ -9,61 +11,77 @@ public class SeqStack<T> extends SeqList<T> implements MyStack<T>{
 	@Override
 	public T pop() {
 		// TODO Auto-generated method stub
-		return null;
+		if(!super.isEmpty()) {
+			return deleteAt(getSize()-1);
+		}else {
+			return null;
+		}
 	}
 
 	@Override
 	public void push(T t) {
 		// TODO Auto-generated method stub
-
+		insert(getSize(), t);
 	}
 
 	@Override
 	public T getTop(){
-		return null;
+		if(!super.isEmpty()) {
+			return get(getSize()-1);
+		}else {
+			return null;
+		}
+	}
+	
+	private Boolean judgeIw(int i) {
+		return i==getSize();
+	}
+	private Boolean judgeIr(int i) {
+		return i==getSize()-1;
 	}
 
 
 	@Override
 	public void insert(int i, T t) {
-		// TODO Auto-generated method stub
-
+		if(judgeIw(i)) {
+			super.insert(i, t);
+		}else {
+			throw new UnsupportedOperationException();
+		}
 	}
 
 	@Override
 	public void delete(T t) {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public T deleteAt(int i) {
-		// TODO Auto-generated method stub
-		return null;
+		if(judgeIr(i)) {
+			return super.deleteAt(i);
+		}else {
+			throw new UnsupportedOperationException();
+		}
 	}
 
 	@Override
 	public T get(int i) {
-		// TODO Auto-generated method stub
-		return null;
+		return super.get(i);
 	}
 
 	@Override
 	public void set(int i, T t) {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public int find(T t) {
-		// TODO Auto-generated method stub
-    return 0;
+		return super.find(t);
 	}
 
 	@Override
 	public LinearList<T> sort() {
-		// TODO Auto-generated method stub
-    return null;
+		throw new UnsupportedOperationException();
 	}
 
 }

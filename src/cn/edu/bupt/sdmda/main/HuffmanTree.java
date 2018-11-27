@@ -28,16 +28,27 @@ public class HuffmanTree {
 
     // NOTE: variable s2n is used to store non-leaf BiTreeNode
     // so if you find a node has a null symbol(non-leaf)
-    // please get the node from s2n but not construct is from symbol
+    // please get the node from s2n but not construct it from symbol
+		
 		while(data.size()>1){
+			// if data in symbol is not null, means it is leaf node
+			// so construct it from symbol
 
-				// if data in symbol is not null, means it is leaf node
-				// so construct it from symbol
-
-				// if data in symbol is null, means it is non-leaf node
-				// so get this node from the HashMap
-
+			// if data in symbol is null, means it is non-leaf node
+			// so get this node from the HashMap
+			Collections.sort(data);
+			Symbol s1=data.remove(0),s2=data.remove(0);
+			BiTreeNode<Symbol> l,r;
+			Symbol rootSym = new Symbol(null,s1.prob+s2.prob);
+			data.add(rootSym);
+			BiTreeNode<Symbol> root = new BiTreeNode<Symbol>(rootSym);
+			l = s1.symbol==null?s2n.get(s1):new BiTreeNode<Symbol>(s1);
+			r = s2.symbol==null?s2n.get(s2):new BiTreeNode<Symbol>(s2);
+			root.setLeft(l);
+			root.setRight(r);
+			s2n.put(rootSym, root);
 		}
+		_tree = new BiTree<Symbol>(s2n.get(data.get(0)));
 	}
 
   // output the encoding of each symbol

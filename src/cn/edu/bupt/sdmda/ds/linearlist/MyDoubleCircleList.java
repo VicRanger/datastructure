@@ -1,27 +1,27 @@
 package cn.edu.bupt.sdmda.ds.linearlist;
 
-import java.util.Arrays;
 
-public class MyLinkedList<T> implements LinearList<T> {
-
-    class Node {
+public class MyDoubleCircleList<T> implements LinearList<T>{
+	class Node {
         public T _ele;
         public Node _next;
+        public Node _prev;
 
         public Node() {
-            init(null, null);
+            init(null, null, null);
         }
 
         public Node(T e) {
-            init(e, null);
+            init(e, null, null);
         }
 
-        public Node(T e, Node n) {
-            init(e, n);
+        public Node(T e, Node p,Node n) {
+            init(e, p, n);
         }
 
-        private void init(T e, Node n) {
+        private void init(T e, Node p, Node n) {
             _ele = e;
+            _prev = p;
             _next = n;
         }
     }
@@ -29,26 +29,37 @@ public class MyLinkedList<T> implements LinearList<T> {
     Node _head;
     int _size;
 
-    public MyLinkedList(int s, T init) {
+    public MyDoubleCircleList(int s, T init) {
     	init(s,init);
     }
 
-    public MyLinkedList() {
+    public MyDoubleCircleList() {
     	init(0,null);
     }
 
+    public void doubleCircle() {
+    	if(isEmpty()) {
+    		return;
+    	}
+    	findAt(getSize()-1)._next = findAt(0);
+    	findAt(0)._prev = findAt(getSize()-1);
+    }
+    
     @Override
     public void init(int s, T init) {
     	_size = Math.max(0,s);
-    	_head = new Node(null,null);
+    	_head = new Node(null,null,null);
     	Node cur = _head;
 		for(int i=0;i<s;i++) {
-			cur._next = new Node(init,null);
+			cur._next = new Node(init,cur,null);
 			cur = cur._next;
 		}
+		doubleCircle();
     }
     @Override
     public void reverse(int start,int end) {
+    	findAt(getSize()-1)._next = null;
+    	findAt(0)._prev = null;
     	Node prevNode = findAt(start-1);
     	Node curNode = findAt(start);
     	Node endNode = findAt(end); 
@@ -58,10 +69,15 @@ public class MyLinkedList<T> implements LinearList<T> {
     	while(nextNode!=endNextNode) {
     		curNode = nextNode;
     		nextNode = curNode._next;
+    		if(lastNode!=null) {
+        		lastNode._prev = curNode;
+    		}
     		curNode._next = lastNode;
     		lastNode = curNode;
     	}
     	prevNode._next = endNode;
+    	doubleCircle();
+//    	printInfo();
     }
     @Override
     public void reverse() {
@@ -85,6 +101,7 @@ public class MyLinkedList<T> implements LinearList<T> {
     		cur = next;
     		next = cur._next;
     		cur._next = null;
+    		cur._prev = null;
     	}
         _head._next = null;
         _head = null;
@@ -98,20 +115,30 @@ public class MyLinkedList<T> implements LinearList<T> {
             return;
         }
         Node cur = _head;
-        Node node = new Node(t, null);
+        Node node = new Node(t,null,null);
         cur = findAt(i-1);
+        node._prev = cur;
         node._next = cur._next;
+        if(cur._next != null) {
+        	cur._next._prev = node;
+        }
         cur._next = node;
         _size++;
+        doubleCircle();
+        printInfo();
     }
 
     @Override
     public void delete(T t) {
-        Node cur = _head;
-        while (cur._next != null) {
-            if (t.equals(cur._next._ele)) {
-                cur._next = cur._next._next;
+        Node cur = _head._next;
+        while (cur != null) {
+            if (t.equals(cur._ele)) {
+            	if(cur._next != null) {
+                	cur._next._prev = cur._prev;
+            	}
+            	cur._prev._next = cur._next;
                 _size--;
+                doubleCircle();
                 return;
             }
             cur = cur._next;
@@ -123,14 +150,22 @@ public class MyLinkedList<T> implements LinearList<T> {
     	if(!checkReadableRange(i)) {
     		return null;
     	}
-    	Node node = findAt(i-1);
-    	Node ret = node._next;
-    	node._next = node._next._next;
+    	Node cur = findAt(i);
+    	Node ret = cur;
+        cur._next._prev = cur._prev;
+    	if(_head._next == cur) {
+    		_head._next = cur._next;
+    	}
+    	cur._prev._next = cur._next;
     	_size --;
+    	doubleCircle();
+    	printInfo();
     	return ret._ele;
     }
 
     private Node findAt(int i) {
+//    	System.out.println();
+//    	System.out.println("findAt "+i);
     	if(i<-1 || i>=_size) {
     		return null;
     	}
@@ -177,23 +212,14 @@ public class MyLinkedList<T> implements LinearList<T> {
 
     @Override
     public LinearList<T> sort() {
-    	Object a[] = new Object[_size];
-    	Node cur = _head._next;
-    	for(int i=0;i<_size;i++) {
-    		a[i] = cur._ele;
-    		cur = cur._next;
-    	}
-    	Arrays.sort(a);
-    	MyLinkedList<T> ret = new MyLinkedList<T>(_size,null);
-    	for(int i=0;i<_size;i++) {
-    		ret.set(i, (T) a[i]);
-    	}
-        return (LinearList<T>) ret;
+        return null;
     }
 
     private Node getNodeBefore(int i) {
-        // assume i is a valid value
-        return null;
+    	if(!checkReadableRange(i)) {
+    		return null;
+    	}
+        return findAt(i)._prev;
     }
 
     private boolean checkReadableRange(int i) {
@@ -209,4 +235,14 @@ public class MyLinkedList<T> implements LinearList<T> {
         }
         return true;
     }
+    
+    public void printInfo() {
+//    	System.out.println("MyDoubleCircleList:");
+//		System.out.println(getSize());
+//		for(int i=0; i<getSize(); ++i){
+//			System.out.printf("%d(%d,%d)\t",get(i),findAt(i)._prev._ele,findAt(i)._next._ele);
+//		}
+//		System.out.println("");
+    }
+
 }
