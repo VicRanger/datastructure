@@ -1,5 +1,6 @@
 package cn.edu.bupt.sdmda.ds.tree;
 
+@SuppressWarnings("rawtypes")
 public class Heap<T extends Comparable> {
     Object[] data;
     private int size;
