@@ -47,8 +47,11 @@ public class DSMain {
             case "heap":
                 MyDSMain.testHeapMain(args);
                 break;
+            case "graph":
+                testGraphMain(args);
+                break;
             case "hash":
-                testHash(args);
+                testHashMain(args);
                 break;
             }
         }
@@ -298,7 +301,35 @@ public class DSMain {
         System.out.println(ht.getSymbolTable());
     }
 
-    public static void testHash(String[] args) {
+    public static void testGraphMain(String[] args) {
+        int n = Integer.parseInt(args[1]);
+        double[][] graph = new double[n][n];
+        for (int i = 2; i < args.length; ++i) {
+            graph[(i - 2) / n][(i - 2) % n] = Double.parseDouble(args[i]);
+        }
+        for (int i = 0; i < n; ++i) {
+            System.out.println("====i(" + i + ")====");
+            GraphAlgorithm.bfs(graph, i);
+            System.out.println();
+            GraphAlgorithm.dfs(graph, i);
+            System.out.println();
+        }
+        System.out.println("====PRIM====");
+        printGraph(GraphAlgorithm.prim(graph));
+        System.out.println("====KRUSKAL====");
+        printGraph(GraphAlgorithm.kruskal(graph));
+        System.out.println("====DIJKSTRA(" + 0 + " to " + n / 2 + ")====");
+        System.out.println(GraphAlgorithm.dijkstra(graph, 0, n / 2));
+    }
+    static void printGraph(double[][] graph) {
+        for (int i = 0; i < graph.length; ++i) {
+            for (int j = 0; j < graph[i].length; ++j) {
+                System.out.print(graph[i][j] + " ");
+            }
+            System.out.println("");
+        }
+    }
+    public static void testHashMain(String[] args) {
         MyHash<String, String> mh = new MyHash<>();
         List<String> keys = new ArrayList<>();
         for (int i = 0; i < (args.length - 1) / 2; ++i) {
@@ -306,20 +337,19 @@ public class DSMain {
             keys.add(args[2 * i + 1]);
         }
 
-//		System.out.println("output:");
         for (int i = 1; i < args.length; ++i) {
             System.out.println(mh.get(args[i]));
         }
 
-//		System.out.println("change an item in hash table");
         mh.put(keys.get(keys.size() / 2), "**FOR TEST**");
 
         System.out.println("=======");
-//		System.out.println("output:");
+
         for (int i = 1; i < args.length; ++i) {
             System.out.println(mh.get(args[i]));
         }
 
     }
+
 
 }
