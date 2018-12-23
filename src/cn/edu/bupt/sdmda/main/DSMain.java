@@ -53,6 +53,12 @@ public class DSMain {
             case "hash":
                 testHashMain(args);
                 break;
+            case "linearlistsearch":
+                MyDSMain.testLinearlistSearchMain(args);
+                break;
+            case "sort":
+                MyDSMain.testSortMain(args);
+                break;
             }
         }
 

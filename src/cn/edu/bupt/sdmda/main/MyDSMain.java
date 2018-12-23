@@ -1,15 +1,151 @@
 package cn.edu.bupt.sdmda.main;
 
+import cn.edu.bupt.sdmda.ds.linearlist.BinarySearchSeqList;
 import cn.edu.bupt.sdmda.ds.linearlist.LinearList;
 import cn.edu.bupt.sdmda.ds.linearlist.MyCircleList;
 import cn.edu.bupt.sdmda.ds.linearlist.MyDoubleCircleList;
 import cn.edu.bupt.sdmda.ds.linearlist.MyDoubleList;
 import cn.edu.bupt.sdmda.ds.linearlist.MyLinkedList;
 import cn.edu.bupt.sdmda.ds.linearlist.SeqList;
+import cn.edu.bupt.sdmda.ds.linearlist.SoldierSeqList;
 import cn.edu.bupt.sdmda.ds.tree.Heap;
 
 public class MyDSMain {
+    
+    private static long time;
+    private static long totalTime;
+    private static void startTick() {
+        time = System.currentTimeMillis();
+    }
+    private static void endTick() {
+        totalTime += System.currentTimeMillis()-time;
+        System.out.print(".");
+    }
+    private static void clear() {
+        totalTime = 0;
+        System.out.println();
+    }
+    private static long getTick() {
+        return totalTime;
+    }
+    
+    public static void testSortMain(String[] args) {
+        int N = Integer.parseInt(args[1]);
+        int M = Integer.parseInt(args[2]);
+        double data[] = new double[N];
+        double t[] = new double[N];
+        for(int i=0;i<N;i++) {
+            data[i] = (Math.random()*1e9);
+        }
+        clear();
+        for(int i=0;i<M;i++) {
+            System.arraycopy(data, 0, t, 0, N);
+            startTick();
+            t = SortAlgorithm.QSort(t);
+//            for(int j=0;j<N;j++) {System.out.print(t[j]+" ");}
+//            System.out.println();
+            endTick();
+        }
+        System.out.println();
+        System.out.println("QSort: "+getTick()+"ms");
+        clear();
+        for(int i=0;i<M;i++) {
+            System.arraycopy(data, 0, t, 0, N);
+            startTick();
+            t = SortAlgorithm.QuickSort(t);
+//            for(int j=0;j<N;j++) {System.out.print(t[j]+" ");}
+//            System.out.println();
+            endTick();
+        }
+        System.out.println();
+        System.out.println("QuickSort: "+getTick()+"ms");
+        clear();
+        for(int i=0;i<M;i++) {
+            System.arraycopy(data, 0, t, 0, N);
+            startTick();
+            t = SortAlgorithm.MergeSort(t);
+//            for(int j=0;j<N;j++) {System.out.print(t[j]+" ");}
+//            System.out.println();
+            endTick();
+        }
+        System.out.println();
+        System.out.println("MergeSort: "+getTick()+"ms");
+        clear();
+        for(int i=0;i<M;i++) {
+            System.arraycopy(data, 0, t, 0, N);
+            startTick();
+            t = SortAlgorithm.InsertionSort(t);
+//          for(int j=0;j<N;j++) {System.out.print(t[j]+" ");}
+//            System.out.println();
+            endTick();
+        }
+        System.out.println();
+        System.out.println("InsertionSort: "+getTick()+"ms");
+        clear();
+        for(int i=0;i<M;i++) {
+            System.arraycopy(data, 0, t, 0, N);
+            startTick();
+            t = SortAlgorithm.SelectionSort(t);
+//            for(int j=0;j<N;j++) {System.out.print(t[j]+" ");}
+//            System.out.println();
+            endTick();
+        }
+        System.out.println();
+        System.out.println("SelectionSort: "+getTick()+"ms");
+        clear();
+        for(int i=0;i<M;i++) {
+            System.arraycopy(data, 0, t, 0, N);
+            startTick();
+            t = SortAlgorithm.BubbleSort(t);
+//            for(int j=0;j<N;j++) {System.out.print(t[j]+" ");}
+//            System.out.println();
+            endTick();
+        }
+        System.out.println();
+        System.out.println("BubbleSort: "+getTick()+"ms");
+        
 
+    }
+    
+    
+
+    public static void testLinearlistSearchMain(String[] args) {
+        SeqList<Integer> sql = new SeqList<Integer>();
+        SoldierSeqList<Integer> ssql = new SoldierSeqList<Integer>();
+        BinarySearchSeqList<Integer> bssql = new BinarySearchSeqList<Integer>();
+        int n = Integer.parseInt(args[1]);
+        System.out.println("n="+args[1]);
+        for(int i=0;i<n;i++) {
+            sql.insert(i, i);
+            ssql.insert(i, i);
+            bssql.insert(i);
+        }
+        long start = System.currentTimeMillis();
+        for(int i=0;i<n;i++) {
+            int p = sql.findReverse(i);
+//            System.out.print(p+" ");
+        }
+        System.out.println();
+        System.out.println("Normal Search Complete");
+        System.out.println("time:"+(System.currentTimeMillis()-start)+"ms");
+        start = System.currentTimeMillis();
+        for(int i=0;i<n;i++) {
+            int p = ssql.find(i);
+//            System.out.print(p+" ");
+        }
+        System.out.println();
+        System.out.println("Soldier Search Complete");
+        System.out.println("time:"+(System.currentTimeMillis()-start)+"ms");
+        start = System.currentTimeMillis();
+        for(int i=0;i<n;i++) {
+            int p = bssql.findExact(i);
+//            System.out.print(p+" ");
+        }
+        System.out.println();
+        System.out.println("Binary Search Complete");
+        System.out.println("time:"+(System.currentTimeMillis()-start)+"ms");
+    }
+    
     public static void testHeapMain(String[] args) {
         Heap<Integer> heap = new Heap<Integer>(200);
         int i = 1;
@@ -163,4 +299,6 @@ public class MyDSMain {
         }
         System.out.println("");
     }
+    
+
 }

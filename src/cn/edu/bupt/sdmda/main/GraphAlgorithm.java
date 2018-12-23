@@ -129,6 +129,14 @@ public class GraphAlgorithm {
         }
         // init a double[][] for return
         double[][] ret = new double[graph.length][graph.length];
+        for(int i=0,len=graph.length;i<len;i++) {
+            for(int j=0,len2=graph.length;j<len2;j++) {
+                if(i==j) {
+                    continue;
+                }
+                ret[i][j] = -1;
+            }
+        }
         // loop on edges
         for(int i=0,len=edges.size();i<len;i++) {
             // check if the roots of two vertex of this edge the same
@@ -155,7 +163,6 @@ public class GraphAlgorithm {
         }
         return ret;
     }
-
     // a simple class to represent edge
     // it is comparable to itself
     static class Edge implements Comparable<Edge> {
@@ -167,7 +174,6 @@ public class GraphAlgorithm {
             this.v2 = v1 < v2 ? v2 : v1;
             weight = w;
         }
-
         @Override
         public int compareTo(Edge o) {
             // TODO Auto-generated method stub
@@ -179,7 +185,6 @@ public class GraphAlgorithm {
                 return 0;
             return 0;
         }
-
     }
 
     public static double dijkstra(double[][] graph, int start, int end) {
@@ -198,7 +203,6 @@ public class GraphAlgorithm {
             }
             V.add(i);
         }
-
         // loop if end is not in U
         while(!U.contains(end)) {
             int v=start;
@@ -222,5 +226,4 @@ public class GraphAlgorithm {
         }
         return distance[end];
     }
-
 }

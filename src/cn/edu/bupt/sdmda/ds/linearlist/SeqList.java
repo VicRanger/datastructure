@@ -125,6 +125,16 @@ public class SeqList<T> implements LinearList<T> {
         }
         return -1;
     }
+    
+    public int findReverse(T t) {
+        // TODO Auto-generated method stub
+        for (int i=_size-1; i>=0; i--) {
+            if (_data[i].equals(t)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     @SuppressWarnings("unchecked")
 	@Override
