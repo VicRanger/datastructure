@@ -122,7 +122,7 @@ public class MyHash<K, V> implements IHashTable<K, V> {
         @SuppressWarnings("unchecked")
         @Override
         public boolean equals(Object obj) {
-            if(_key==((Node)obj)._key) {
+            if(_key.equals(((Node)obj)._key)) {
                 return true;
             }
             return false;

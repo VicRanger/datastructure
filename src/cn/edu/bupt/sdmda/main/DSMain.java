@@ -65,13 +65,11 @@ public class DSMain {
     }
 
     public static void testLinearListMain(String[] args) {
-
         SeqList<Integer> seql = new SeqList<Integer>(args.length - 1, 0);
         for (int i = 0; i < args.length - 1; ++i) {
             seql.set(i, Integer.parseInt(args[i + 1]));
         }
         testLinearList(seql);
-
         System.out.println("=======");
 
         MyLinkedList<Integer> lnkl = new MyLinkedList<Integer>(args.length - 1, 0);
